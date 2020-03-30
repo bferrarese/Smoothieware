@@ -6,20 +6,23 @@ DEVICES=lpc1768
 #  Checked - Optimizations enabled with MRI debug monitor support. (Recommended Type)
 #  Release - Optimizations enabled.
 #  Debug - Optimization disabled with MRI debug monitor support.
-BUILD_TYPE=Checked
+BUILD_TYPE=Release
+
+export CNC = 1
+export DISABLEMSD = 1
 
 # Set to 1 to tag each heap allocation with the caller's return address.
 # NOTE: Can't be enabled with latest build as not compatible with newlib nano.
 HEAP_TAGS=0
 
 # Set to 1 configure MPU to disable write buffering and eliminate imprecise bus faults.
-WRITE_BUFFER_DISABLE=0
+WRITE_BUFFER_DISABLE=1
 
 # Set to non zero value if you want checks to be enabled which reserve a
 # specific amount of space for the stack.  The heap's growth will be
 # constrained to reserve this much space for the stack and the stack won't be
 # able to grow larger than this amount.
-STACK_SIZE=3072
+STACK_SIZE=4000
 
 # Set to 1 to allow MRI debug monitor to take full control of UART0 and use it
 # as a dedicated debug channel.  If you are using the USB based serial port for
@@ -29,7 +32,7 @@ ENABLE_DEBUG_MONITOR?=0
 
 # this is the default UART baud rate used if it is not set in config
 # it is also the baud rate used to report any errors found while parsing the config file
-DEFAULT_SERIAL_BAUD_RATE?=9600
+DEFAULT_SERIAL_BAUD_RATE?=250000
 
 ifeq "$(ENABLE_DEBUG_MONITOR)" "1"
 # Can add MRI_UART_BAUD=115200 to next line if GDB fails to connect to MRI.
@@ -72,7 +75,7 @@ ifeq "$(EXCLUDE_MODULES)" ""
 
 ifeq "$(CNC)" "1"
 # CNC build excludes these
-export EXCLUDE_MODULES = tools/filamentdetector tools/scaracal tools/temperaturecontrol tools/temperatureswitch tools/extruder
+export EXCLUDE_MODULES = tools/filamentdetector tools/scaracal tools/extruder tools/drillingcycles tools/spindle tools/rotarydeltacalibration tools/toolmanager utils/panel
 else
 # 3D build excludes these
 export EXCLUDE_MODULES = tools/drillingcycles tools/spindle
@@ -101,7 +104,7 @@ DEFINES += -DN_PRIMARY_AXIS=$(PAXIS)
 endif
 
 # set to not compile in any network support
-#export NONETWORK = 1
+export NONETWORK = 1
 
 include $(BUILD_DIR)/build.mk
 

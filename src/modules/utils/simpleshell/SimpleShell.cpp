@@ -654,27 +654,22 @@ void SimpleShell::version_command( string parameters, StreamOutput *stream)
     Version vers;
     uint32_t dev = getDeviceType();
     const char *mcu = (dev & 0x00100000) ? "LPC1769" : "LPC1768";
-    stream->printf("Build version: %s, Build date: %s, MCU: %s, System Clock: %ldMHz\r\n", vers.get_build(), vers.get_build_date(), mcu, SystemCoreClock / 1000000);
+    stream->printf("Build version: %s\r\nBuild date: %s\r\nMCU: %s\r\nSystem Clock: %ldMHz\r\n", vers.get_build(), vers.get_build_date(), mcu, SystemCoreClock / 1000000);
     #ifdef CNC
-    stream->printf("  CNC Build ");
+    stream->printf("Build flags:\r\n - CNC\r\n");
     #endif
+    stream->printf(" - myBF\r\n");
     #ifdef DISABLEMSD
-    stream->printf("  NOMSD Build\r\n");
+    stream->printf(" - NOMSD\r\n");
     #endif
-    stream->printf("%d axis\n", MAX_ROBOT_ACTUATORS);
-    if(!(dev & 0x00100000)) {
-        stream->printf("NOTICE: This MCU is deprecated, and cannot guarantee proper function\n");
-        THEKERNEL->set_bad_mcu(true);
-    }else{
-        THEKERNEL->set_bad_mcu(false);
-    }
+    stream->printf(" - Axis: %d\n", MAX_ROBOT_ACTUATORS);
 }
 
 // Reset the system
 void SimpleShell::reset_command( string parameters, StreamOutput *stream)
 {
-    stream->printf("Smoothie out. Peace. Rebooting in 5 seconds...\r\n");
-    reset_delay_secs = 5; // reboot in 5 seconds
+    stream->printf("Rebooting board...\r\n");
+    reset_delay_secs = 1; // reboot in 1 seconds
 }
 
 // go into dfu boot mode
