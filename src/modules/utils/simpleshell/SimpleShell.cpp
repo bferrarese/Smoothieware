@@ -654,15 +654,15 @@ void SimpleShell::version_command( string parameters, StreamOutput *stream)
     Version vers;
     uint32_t dev = getDeviceType();
     const char *mcu = (dev & 0x00100000) ? "LPC1769" : "LPC1768";
-    stream->printf("Build version: %s\r\nBuild date: %s\r\nMCU: %s\r\nSystem Clock: %ldMHz\r\n", vers.get_build(), vers.get_build_date(), mcu, SystemCoreClock / 1000000);
-    #ifdef CNC
-    stream->printf("Build flags:\r\n - CNC\r\n");
-    #endif
-    stream->printf(" - myBF\r\n");
-    #ifdef DISABLEMSD
-    stream->printf(" - NOMSD\r\n");
-    #endif
-    stream->printf(" - Axis: %d\n", MAX_ROBOT_ACTUATORS);
+    stream->printf("Build version: %s\r\nBuild date: %s\r\nMCU: %s - %ldMHz", vers.get_build(), vers.get_build_date(), mcu, SystemCoreClock / 1000000);
+    // #ifdef CNC
+    // stream->printf("Build flags:\r\n - CNC\r\n");
+    // #endif
+    // stream->printf(" - myBF\r\n");
+    // #ifdef DISABLEMSD
+    // stream->printf(" - NOMSD\r\n");
+    // #endif
+    stream->printf(" - %d Axis\n", MAX_ROBOT_ACTUATORS);
 }
 
 // Reset the system
